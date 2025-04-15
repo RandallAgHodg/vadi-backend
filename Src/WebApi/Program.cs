@@ -1,15 +1,26 @@
+using Application;
+using DataAccess;
+using DataAccess.Database;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var services = builder.Services;
+
+var config = builder.Configuration;
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services
+    .AddEndpointsApiExplorer()
+    .AddSwaggerGen()
+    .AddDataAccess(config)
+    .AddApplication()
+    .AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+var databaseInitializer = app.Services.GetRequiredService<DatabaseInitializer>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
