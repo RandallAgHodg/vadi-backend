@@ -16,4 +16,11 @@ public static class ApiRoutes
 
         public const string Update = $"{Index}/actualizar-solicitud";
     }
+
+    public static class Estados
+    {
+        public const string Index = $"{Root}/estado";
+
+        public const string GetAll = Index;
+    }
 }

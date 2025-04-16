@@ -6,12 +6,12 @@ using Domain.Common.Contracts.Data;
 using Domain.Common.Contracts.Response;
 using Microsoft.Data.SqlClient;
 
-namespace Infrastructure.DataAccess;
+namespace DataAccess.Repositories;
 
 public class SolicitudRepository : ISolicitudRepository
 {
     private readonly IDbConnectionFactory _connectionFactory;
-    
+
     public SolicitudRepository(IDbConnectionFactory connectionFactory) =>
         _connectionFactory = connectionFactory;
 
@@ -36,12 +36,12 @@ public class SolicitudRepository : ISolicitudRepository
     public async Task<IEnumerable<SolicitudDto>> GetSolicitudByQueryAsync(string query)
     {
         using var connection = await _connectionFactory.CreateConnectionAsync();
-        
+
         const string procedure = "sp_Solicitudes_ObtenerPorSolicitante";
-        
+
         var data = await connection.QueryAsync<SolicitudDto>
             (procedure,
-                new { Solicitante = query},
+                new { Solicitante = query },
                 commandType: CommandType.StoredProcedure);
 
         return data;
