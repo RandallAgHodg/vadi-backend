@@ -1,6 +1,7 @@
 using Application;
 using DataAccess;
 using DataAccess.Database;
+using WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ var config = builder.Configuration;
 services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
+    .AddHttpContextAccessor()
     .AddDataAccess(config)
     .AddApplication()
     .AddControllers();
@@ -29,7 +31,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseCors();
+
+app.UseMiddleware<ValidationExceptionMiddleware>();
 
 app.MapControllers();
 
