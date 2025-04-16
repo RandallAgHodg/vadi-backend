@@ -1,6 +1,6 @@
 ﻿using Application.Common.DataAccess;
 using DataAccess.Database;
-using Infrastructure.DataAccess;
+using DataAccess.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +13,9 @@ public static class ConfigureDependencies
         services.AddSingleton<IDbConnectionFactory>(_ =>
         new SqlConnectionFactory(config.GetConnectionString("DefaultConnection")!)) ;
 
-        services.AddSingleton<DatabaseInitializer>().AddSingleton<ISolicitudRepository, SolicitudRepository>();
+        services.AddSingleton<DatabaseInitializer>()
+            .AddSingleton<ISolicitudRepository, SolicitudRepository>()
+            .AddSingleton<IEstadoRepository, EstadoRepository>();
         
         return services;
     }
